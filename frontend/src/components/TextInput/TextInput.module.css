@@ -1,0 +1,61 @@
+/* ===== TextInput Wrapper ===== */
+.textInputWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 500px;
+  margin: 10px auto;
+  box-sizing: border-box;
+}
+
+/* ===== Input Field ===== */
+.textInputWrapper input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 14px 18px;
+  border-radius: 10px;
+  border: 1px solid #ffffff;
+  outline: none;
+  font-size: 17px;
+  background-color: #f3f3f3;
+  color: #000000;
+  transition: border-color 0.2s ease;
+}
+
+.textInputWrapper input:focus {
+  border-color: #3861fb;
+}
+
+.textInputWrapper input::placeholder {
+  color: #888888;
+}
+
+/* ===== Error Message ===== */
+.errorMessage {
+  color: #de1b55;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 6px 0 0 4px;
+  text-align: left;
+  width: 100%;
+}
+
+/* ===== Mobile ===== */
+@media screen and (max-width: 768px) {
+  .textInputWrapper {
+    max-width: 100%;
+  }
+
+  .textInputWrapper input {
+    font-size: 16px;
+    padding: 12px 14px;
+  }
+}
+
+/* ===== Small Mobile ===== */
+@media screen and (max-width: 480px) {
+  .textInputWrapper input {
+    font-size: 15px;
+    padding: 11px 12px;
+  }
+}

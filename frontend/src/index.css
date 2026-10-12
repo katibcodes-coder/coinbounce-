@@ -1,0 +1,165 @@
+
+/* ===== Global Reset ===== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== Main Page ===== */
+
+html {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #020202;
+  color: #ffffff;
+  font-family: Inter, Arial, sans-serif;
+  overflow-wrap: break-word;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* ===== Responsive Media ===== */
+
+img,
+video,
+iframe,
+svg {
+  max-width: 100%;
+}
+
+img,
+video {
+  height: auto;
+}
+
+figure {
+  max-width: 100%;
+}
+
+/* ===== Forms and Buttons ===== */
+
+input,
+textarea,
+select,
+button {
+  max-width: 100%;
+  font: inherit;
+}
+
+input,
+textarea,
+select {
+  min-width: 0;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+a {
+  color: inherit;
+  overflow-wrap: anywhere;
+}
+
+/* ===== Tables ===== */
+
+table {
+  max-width: 100%;
+  border-collapse: collapse;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* ===== Tablet ===== */
+
+@media screen and (max-width: 768px) {
+  body {
+    font-size: 15px;
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 5vw, 2.2rem);
+  }
+
+  h2 {
+    font-size: clamp(1.3rem, 4vw, 1.8rem);
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  input,
+  textarea,
+  select,
+  button {
+    max-width: 100%;
+  }
+}
+
+/* ===== Mobile ===== */
+
+@media screen and (max-width: 480px) {
+  body {
+    font-size: 14px;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+  }
+
+  p {
+    overflow-wrap: break-word;
+  }
+
+  input,
+  textarea,
+  select {
+    width: 100%;
+  }
+}
+
+/* ===== Small Mobile ===== */
+
+@media screen and (max-width: 360px) {
+  body {
+    font-size: 13px;
+  }
+
+  h1 {
+    font-size: 1.4rem;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+}

@@ -1,0 +1,73 @@
+
+/* Main App Container */
+
+.container {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background-color: #020202;
+  color: #ffffff;
+  overflow-x: clip;
+}
+
+/* Main Layout */
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+  margin: 0 auto;
+}
+
+/* Main Page Content */
+
+.main {
+  width: 100%;
+  max-width: 1400px;
+  min-width: 0;
+  margin: 0 auto;
+  padding: 24px;
+  flex: 1;
+}
+
+/* Tablet Responsive */
+
+@media screen and (max-width: 1024px) {
+  .main {
+    padding: 20px;
+  }
+}
+
+/* Mobile Responsive */
+
+@media screen and (max-width: 768px) {
+  .container,
+  .layout {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .main {
+    width: 100%;
+    max-width: 100%;
+    padding: 16px;
+  }
+}
+
+/* Small Mobile Responsive */
+
+@media screen and (max-width: 480px) {
+  .main {
+    padding: 12px;
+  }
+}
+
+/* Extra Small Mobile */
+
+@media screen and (max-width: 360px) {
+  .main {
+    padding: 8px;
+  }
+}

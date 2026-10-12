@@ -1,0 +1,138 @@
+/* ===== Blogs Wrapper ===== */
+.blogsWrapper {
+  margin: 50px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ===== Single Blog Card ===== */
+.blog {
+  background-color: black;
+  border: 1px solid #fff;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 900px;
+  padding: 16px;
+  margin: 40px 20px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  overflow: hidden;          /* Card ke bahar kuch na jaye */
+}
+
+/* ===== Blog Image ===== */
+.blog img {
+  width: 300px;
+  max-width: 100%;           /* Mobile par image shrink ho jaye */
+  height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* ===== Blog Title ===== */
+.blog h1 {
+  text-align: left;
+  margin: 15px 0;
+  background-color: transparent;
+  color: #fff;
+  width: 100%;
+  
+  /* Lambe text ke liye — yeh 3 lines sabse zaroori hain */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+.blog:hover h1 {
+  color: #3861fb;
+}
+
+/* ===== Blog Content ===== */
+.blog p {
+  margin-top: 20px;
+  font-weight: bold;
+  width: 100%;
+  
+  /* Lambe text ke liye */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+/* ===== Tablet Responsive ===== */
+@media screen and (max-width: 1024px) {
+  .blog {
+    width: 88%;
+    margin: 30px 16px;
+  }
+  
+  .blog img {
+    width: 260px;
+    height: 260px;
+  }
+  
+  .blog h1 {
+    font-size: 22px;
+  }
+}
+
+/* ===== Mobile Responsive ===== */
+@media screen and (max-width: 600px) {
+  .blogsWrapper {
+    gap: 30px;
+    margin: 30px 0;
+  }
+  
+  .blog {
+    width: 92%;
+    margin: 20px 10px;
+    padding: 14px;
+  }
+  
+  .blog img {
+    width: 100%;
+    max-width: 100%;
+    height: 200px;
+  }
+  
+  .blog h1 {
+    font-size: 19px;
+    line-height: 1.35;
+    text-align: center;
+  }
+  
+  .blog p {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-top: 14px;
+  }
+}
+
+/* ===== Small Mobile ===== */
+@media screen and (max-width: 380px) {
+  .blog {
+    width: 94%;
+    padding: 12px;
+    margin: 16px 6px;
+  }
+  
+  .blog img {
+    height: 170px;
+  }
+  
+  .blog h1 {
+    font-size: 17px;
+  }
+  
+  .blog p {
+    font-size: 13px;
+  }
+}

@@ -1,0 +1,47 @@
+node_modules/
+.env
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies (dono frontend aur backend ke liye)
+node_modules/
+*/node_modules/
+**/node_modules/
+
+# Environment files (SECRETS — NEVER UPLOAD)
+.env
+*/.env
+**/.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# testing
+/coverage
+*/coverage
+
+# production
+/build
+*/build
+/dist
+
+# User uploaded images (backend storage)
+backend/storage/
+
+# misc
+.DS_Store
+Thumbs.db
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# PnP
+/.pnp
+.pnp.js
