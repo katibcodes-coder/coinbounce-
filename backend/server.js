@@ -1,3 +1,4 @@
+```js
 const express = require("express");
 const dbConnect = require("./database/index");
 const { PORT } = require("./config/index");
@@ -10,23 +11,15 @@ const app = express();
 
 app.use(cookieParser());
 
-// CORS setup — allows multiple origins
 const allowedOrigins = [
   "http://localhost:3000",
-  // Frontend deploy hone ke baad yahan Vercel URL add karenge
+  "https://coinbounce-ocjmbi9fs-katibcodes-coder.vercel.app",
 ];
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow requests with no origin (mobile apps, Postman, etc.)
-      if (!origin) return callback(null, true);
-
-      // Agar allowedOrigins mein hai ya development mein hai
-      if (
-        allowedOrigins.includes(origin) ||
-        process.env.NODE_ENV !== "production"
-      ) {
+      if (!origin || allowedOrigins.includes(origin)) {
         return callback(null, true);
       }
 
@@ -48,5 +41,6 @@ app.use("/storage", express.static("storage"));
 app.use(errorHandler);
 
 app.listen(PORT, () => {
-  console.log(`Backend is running on port: ${PORT}`);
+  console.log(`Backend is running on port: ${ PORT } `);
 });
+```
