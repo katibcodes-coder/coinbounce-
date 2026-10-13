@@ -1,4 +1,3 @@
-```jsx
 import { useState, useEffect } from "react";
 import { getBlogById, updateBlog } from "../../api/internal";
 import { useNavigate, useParams } from "react-router-dom";
@@ -143,4 +142,3 @@ function UpdateBlog() {
 }
 
 export default UpdateBlog;
-```
