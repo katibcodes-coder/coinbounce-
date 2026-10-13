@@ -1,149 +1,110 @@
 import { useState } from "react";
-import styles from "./Signup.module.css";
+import styles from "./Login.module.css";
 import TextInput from "../../components/TextInput/TextInput";
-import signupSchema from "../../schemas/signupSchema";
+import loginSchema from "../../schemas/loginSchema";
 import { useFormik } from "formik";
+import { login } from "../../api/internal";
 import { setUser } from "../../store/userSlice";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { signup } from "../../api/internal";
+import { useNavigate } from "react-router-dom";
 
-function Signup() {
+function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [error, setError] = useState("");
 
-  const handleSignup = async () => {
+  const { values, touched, handleBlur, handleChange, errors } = useFormik({
+    initialValues: {
+      username: "",
+      password: "",
+    },
+    validationSchema: loginSchema,
+  });
+
+  const handleLogin = async () => {
     const data = {
-      name: values.name,
       username: values.username,
       password: values.password,
-      confirmPassword: values.confirmPassword,
-      email: values.email,
     };
 
-    const response = await signup(data);
+    try {
+      const response = await login(data);
 
-    if (response.status === 201) {
-      // setUser
-      const user = {
-        _id: response.data.user._id,
-        email: response.data.user.email,
-        username: response.data.user.username,
-        auth: response.data.auth,
-      };
+      if (response.status === 200) {
+        const user = {
+          _id: response.data.user._id,
+          email: response.data.user.email,
+          username: response.data.user.username,
+          auth: response.data.auth,
+        };
 
-      dispatch(setUser(user));
-
-      // redirect homepage
-      navigate("/");
-    } else if (response.code === "ERR_BAD_REQUEST") {
-      // display error message
-      setError(response.response.data.message);
+        dispatch(setUser(user));
+        navigate("/");
+      } else {
+        setError("Login nahi ho saka. Dobara koshish karein.");
+      }
+    } catch (error) {
+      setError(
+        error.response?.data?.message ||
+          "Login nahi ho saka. Dobara koshish karein."
+      );
     }
   };
 
-  const { values, touched, handleBlur, handleChange, errors } = useFormik({
-    initialValues: {
-      name: "",
-      username: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-    },
-
-    validationSchema: signupSchema,
-  });
-
   return (
-    <div className={styles.signupWrapper}>
-      <div className={styles.signupHeader}>Create an account</div>
-      <TextInput
-        type="text"
-        name="name"
-        value={values.name}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        placeholder="name"
-        error={errors.name && touched.name ? 1 : undefined}
-        errormessage={errors.name}
-      />
+    <div className={styles.loginWrapper}>
+      <div className={styles.loginHeader}>Log in to your account</div>
 
       <TextInput
         type="text"
-        name="username"
         value={values.username}
-        onChange={handleChange}
+        name="username"
         onBlur={handleBlur}
+        onChange={handleChange}
         placeholder="username"
         error={errors.username && touched.username ? 1 : undefined}
         errormessage={errors.username}
       />
 
       <TextInput
-        type="text"
-        name="email"
-        value={values.email}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        placeholder="email"
-        error={errors.email && touched.email ? 1 : undefined}
-        errormessage={errors.email}
-      />
-
-      <TextInput
         type="password"
         name="password"
         value={values.password}
-        onChange={handleChange}
         onBlur={handleBlur}
+        onChange={handleChange}
         placeholder="password"
         error={errors.password && touched.password ? 1 : undefined}
         errormessage={errors.password}
       />
 
-      <TextInput
-        type="password"
-        name="confirmPassword"
-        value={values.confirmPassword}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        placeholder="confirm password"
-        error={
-          errors.confirmPassword && touched.confirmPassword ? 1 : undefined
-        }
-        errormessage={errors.confirmPassword}
-      />
-
       <button
-        className={styles.signupButton}
-        onClick={handleSignup}
+        className={styles.logInButton}
+        onClick={handleLogin}
         disabled={
           !values.username ||
           !values.password ||
-          !values.name ||
-          !values.confirmPassword ||
-          !values.email ||
           errors.username ||
-          errors.password ||
-          errors.confirmPassword ||
-          errors.name ||
-          errors.email
+          errors.password
         }
       >
-        Sign Up
+        Log In
       </button>
 
       <span>
-        Already have an account?{" "}
-        <button className={styles.login} onClick={() => navigate("/login")}>
-          Log In
+        Don't have an account?{" "}
+        <button
+          className={styles.createAccount}
+          onClick={() => navigate("/signup")}
+        >
+          Register
         </button>
       </span>
 
-      {error != "" ? <p className={styles.errorMessage}>{error}</p> : ""}
+      {error !== "" ? (
+        <p className={styles.errorMessage}>{error}</p>
+      ) : null}
     </div>
   );
 }
 
-export default Signup;
+export default Login;

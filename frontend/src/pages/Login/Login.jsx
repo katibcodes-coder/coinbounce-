@@ -10,10 +10,16 @@ import { useNavigate } from "react-router-dom";
 
 function Login() {
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
-
   const [error, setError] = useState("");
+
+  const { values, touched, handleBlur, handleChange, errors } = useFormik({
+    initialValues: {
+      username: "",
+      password: "",
+    },
+    validationSchema: loginSchema,
+  });
 
   const handleLogin = async () => {
     const data = {
@@ -21,38 +27,34 @@ function Login() {
       password: values.password,
     };
 
-    const response = await login(data);
+    try {
+      const response = await login(data);
 
-    if (response.status === 200) {
-      // 1. setUser
-      const user = {
-        _id: response.data.user._id,
-        email: response.data.user.email,
-        username: response.data.user.username,
-        auth: response.data.auth,
-      };
+      if (response.status === 200) {
+        const user = {
+          _id: response.data.user._id,
+          email: response.data.user.email,
+          username: response.data.user.username,
+          auth: response.data.auth,
+        };
 
-      dispatch(setUser(user));
-      // 2. redirect -> homepage
-      navigate("/");
-    } else if (response.code === "ERR_BAD_REQUEST") {
-      // display error message
-      setError(response.response.data.message);
+        dispatch(setUser(user));
+        navigate("/");
+      } else {
+        setError("Login nahi ho saka. Dobara koshish karein.");
+      }
+    } catch (error) {
+      setError(
+        error.response?.data?.message ||
+          "Login nahi ho saka. Dobara koshish karein."
+      );
     }
   };
-
-  const { values, touched, handleBlur, handleChange, errors } = useFormik({
-    initialValues: {
-      username: "",
-      password: "",
-    },
-
-    validationSchema: loginSchema,
-  });
 
   return (
     <div className={styles.loginWrapper}>
       <div className={styles.loginHeader}>Log in to your account</div>
+
       <TextInput
         type="text"
         value={values.username}
@@ -63,6 +65,7 @@ function Login() {
         error={errors.username && touched.username ? 1 : undefined}
         errormessage={errors.username}
       />
+
       <TextInput
         type="password"
         name="password"
@@ -73,6 +76,7 @@ function Login() {
         error={errors.password && touched.password ? 1 : undefined}
         errormessage={errors.password}
       />
+
       <button
         className={styles.logInButton}
         onClick={handleLogin}
@@ -85,6 +89,7 @@ function Login() {
       >
         Log In
       </button>
+
       <span>
         Don't have an account?{" "}
         <button
@@ -94,7 +99,10 @@ function Login() {
           Register
         </button>
       </span>
-      {error != "" ? <p className={styles.errorMessage}>{error}</p> : ""}
+
+      {error !== "" ? (
+        <p className={styles.errorMessage}>{error}</p>
+      ) : null}
     </div>
   );
 }

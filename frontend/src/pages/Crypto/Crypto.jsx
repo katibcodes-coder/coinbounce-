@@ -7,18 +7,32 @@ function Crypto() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    // IIFE: immediately invoked function expression
-    (async function cryptoApiCall() {
-      const response = await getCrypto();
-      setData(response);
-    })();
+    let isMounted = true;
 
-    // Cleanup
-    setData([]);
+    async function cryptoApiCall() {
+      try {
+        const response = await getCrypto();
+
+        if (isMounted) {
+          setData(Array.isArray(response) ? response : []);
+        }
+      } catch (error) {
+        console.error("Crypto API error:", error);
+        if (isMounted) {
+          setData([]);
+        }
+      }
+    }
+
+    cryptoApiCall();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   if (data.length === 0) {
-    return <Loader text="crytocurrenices" />;
+    return <Loader text="cryptocurrencies" />;
   }
 
   const negativeStyle = {
@@ -40,19 +54,30 @@ function Crypto() {
           <th>24h</th>
         </tr>
       </thead>
+
       <tbody>
         {data.map((coin) => (
-          <tr id={coin.id} className={styles.tableRow}>
+          <tr id={coin.id} key={coin.id} className={styles.tableRow}>
             <td>{coin.market_cap_rank}</td>
+
             <td>
               <div className={styles.logo}>
-                <img src={coin.image} width={40} height={40} /> {coin.name}
+                <img
+                  src={coin.image}
+                  alt={`${coin.name} logo`}
+                  width={40}
+                  height={40}
+                />
+                {coin.name}
               </div>
             </td>
+
             <td>
               <div className={styles.symbol}>{coin.symbol}</div>
             </td>
+
             <td>{coin.current_price}</td>
+
             <td
               style={
                 coin.price_change_percentage_24h < 0
