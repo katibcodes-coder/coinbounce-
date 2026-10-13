@@ -6,24 +6,34 @@ const errorHandler = require("./middlewares/errorHandler");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
-// const corsOptions = {
-//   credentials: true,
-//   origin: ["http://localhost:3000"],
-// };
-
 const app = express();
 
 app.use(cookieParser());
 
-// app.use(cors(corsOptions));
+// CORS setup — allows multiple origins
+const allowedOrigins = [
+  "http://localhost:3000",
+  // Frontend deploy hone ke baad yahan Vercel URL add karenge
+];
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      return callback(null, true);
+      // Allow requests with no origin (mobile apps, Postman, etc.)
+      if (!origin) return callback(null, true);
+
+      // Agar allowedOrigins mein hai ya development mein hai
+      if (
+        allowedOrigins.includes(origin) ||
+        process.env.NODE_ENV !== "production"
+      ) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Not allowed by CORS"));
     },
-    optionsSuccessStatus: 200,
     credentials: true,
+    optionsSuccessStatus: 200,
   })
 );
 
@@ -37,4 +47,6 @@ app.use("/storage", express.static("storage"));
 
 app.use(errorHandler);
 
-app.listen(PORT, console.log(`Backend is running on port: ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Backend is running on port: ${PORT}`);
+});
