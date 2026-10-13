@@ -1,36 +1,31 @@
 import { useState } from "react";
-import styles from "./Login.module.css";
+import styles from "./Signup.module.css";
 import TextInput from "../../components/TextInput/TextInput";
-import loginSchema from "../../schemas/loginSchema";
+import signupSchema from "../../schemas/signupSchema";
 import { useFormik } from "formik";
-import { login } from "../../api/internal";
 import { setUser } from "../../store/userSlice";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { signup } from "../../api/internal";
 
-function Login() {
+function Signup() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [error, setError] = useState("");
 
-  const { values, touched, handleBlur, handleChange, errors } = useFormik({
-    initialValues: {
-      username: "",
-      password: "",
-    },
-    validationSchema: loginSchema,
-  });
-
-  const handleLogin = async () => {
+  const handleSignup = async () => {
     const data = {
+      name: values.name,
       username: values.username,
       password: values.password,
+      confirmPassword: values.confirmPassword,
+      email: values.email,
     };
 
     try {
-      const response = await login(data);
+      const response = await signup(data);
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         const user = {
           _id: response.data.user._id,
           email: response.data.user.email,
@@ -40,71 +35,117 @@ function Login() {
 
         dispatch(setUser(user));
         navigate("/");
-      } else {
-        setError("Login nahi ho saka. Dobara koshish karein.");
       }
     } catch (error) {
       setError(
         error.response?.data?.message ||
-          "Login nahi ho saka. Dobara koshish karein."
+          "Signup nahi ho saka. Dobara koshish karein."
       );
     }
   };
 
+  const { values, touched, handleBlur, handleChange, errors } = useFormik({
+    initialValues: {
+      name: "",
+      username: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+
+    validationSchema: signupSchema,
+  });
+
   return (
-    <div className={styles.loginWrapper}>
-      <div className={styles.loginHeader}>Log in to your account</div>
+    <div className={styles.signupWrapper}>
+      <div className={styles.signupHeader}>Create an account</div>
 
       <TextInput
         type="text"
-        value={values.username}
-        name="username"
-        onBlur={handleBlur}
+        name="name"
+        value={values.name}
         onChange={handleChange}
+        onBlur={handleBlur}
+        placeholder="name"
+        error={errors.name && touched.name ? 1 : undefined}
+        errormessage={errors.name}
+      />
+
+      <TextInput
+        type="text"
+        name="username"
+        value={values.username}
+        onChange={handleChange}
+        onBlur={handleBlur}
         placeholder="username"
         error={errors.username && touched.username ? 1 : undefined}
         errormessage={errors.username}
       />
 
       <TextInput
+        type="text"
+        name="email"
+        value={values.email}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        placeholder="email"
+        error={errors.email && touched.email ? 1 : undefined}
+        errormessage={errors.email}
+      />
+
+      <TextInput
         type="password"
         name="password"
         value={values.password}
-        onBlur={handleBlur}
         onChange={handleChange}
+        onBlur={handleBlur}
         placeholder="password"
         error={errors.password && touched.password ? 1 : undefined}
         errormessage={errors.password}
       />
 
+      <TextInput
+        type="password"
+        name="confirmPassword"
+        value={values.confirmPassword}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        placeholder="confirm password"
+        error={
+          errors.confirmPassword && touched.confirmPassword ? 1 : undefined
+        }
+        errormessage={errors.confirmPassword}
+      />
+
       <button
-        className={styles.logInButton}
-        onClick={handleLogin}
+        className={styles.signupButton}
+        onClick={handleSignup}
         disabled={
           !values.username ||
           !values.password ||
+          !values.name ||
+          !values.confirmPassword ||
+          !values.email ||
           errors.username ||
-          errors.password
+          errors.password ||
+          errors.confirmPassword ||
+          errors.name ||
+          errors.email
         }
       >
-        Log In
+        Sign Up
       </button>
 
       <span>
-        Don't have an account?{" "}
-        <button
-          className={styles.createAccount}
-          onClick={() => navigate("/signup")}
-        >
-          Register
+        Already have an account?{" "}
+        <button className={styles.login} onClick={() => navigate("/login")}>
+          Log In
         </button>
       </span>
 
-      {error !== "" ? (
-        <p className={styles.errorMessage}>{error}</p>
-      ) : null}
+      {error !== "" ? <p className={styles.errorMessage}>{error}</p> : null}
     </div>
   );
 }
 
-export default Login;
+export default Signup;
